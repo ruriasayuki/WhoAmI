@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <script type="text/javascript">
+        var state = 0;//控制动画执行步骤
+		var speed = 5;//动画速度
+		var total = 36;//图片数量
+		var now = 1;
+        var theight = 400;
+        var vwidth = 300;
+        var namelist=new Array("山童",
+        "雨女",
+        "红叶",
+        "食发鬼",
+        "白狼",
+        "萤草",
+        "二口女",
+        "鬼使白",
+        "鬼使黑",
+        "雪女",
+        "座敷童子",
+        "九命猫",
+        "判官",
+        "凤凰火",
+        "傀儡师",
+        "山兔",
+        "河童",
+        "晴明",
+        "神乐",
+        "源博雅",
+        "八百比丘尼",
+        "兵俑",
+        "茨木童子",
+        "大天狗",
+        "姑获鸟",
+        "惠比寿",
+        "椒图",
+        "酒吞童子",
+        "镰鼬",
+        "两面佛",
+        "青行灯",
+        "犬神",
+        "食梦貘",
+        "跳跳妹妹",
+        "童女",
+        "妖狐");
+        var one = 1;
+        var two = 1;
+
+		//收起当前图片
+        function close(){
+			var dw = Math.ceil(speed*Math.cos(item.width/vwidth*1.57));
+            if(item.width>=dw) {
+                item.width = item.width - dw;
+            }
+            else item.width=0;
+        }
+        function Step1(){
+            if(state ==1) {
+                if (item.width > 0) {
+                    close();
+                    var t1 = setTimeout("Step1()",10);
+                }
+                else
+                    state = 2;
+                    Step2();
+                        }
+        }
+		//换上下一张图片
+		function Step2() {
+            if(state==2) {
+
+                var a = Math.floor(Math.random() * total)+1;
+                while(a==one||a==two)
+                {
+                    a = Math.floor(Math.random() * total)+1;
+                }
+				now = a;
+                two=one;
+                one=now;
+				if( now > total ) now = now - total;
+                item.src = "onmyoji/" + now + ".png";
+                state = 3;
+                Step3();
+            }
+        }
+		//铺开下一张图片
+		function open(){
+			var dw =  Math.ceil(speed*Math.cos(item.width/vwidth*1.57));
+            if(item.width <= (vwidth-dw)) {
+                item.width = item.width + dw;
+            }
+            else  item.width = vwidth;
+        }
+        function Step3() {
+            if(state ==3){
+                if(item.width < vwidth) {
+                    open();
+                    var t3 = setTimeout("Step3()",10);
+                }
+                else
+                {
+                    document.getElementById("txt").innerText = "准备";
+                    state=0;
+                }
+            }
+        }
+		//动画入口
+		function Change(){
+		if (state == 0)
+		{
+            document.getElementById("txt").innerText = namelist[now-1];
+		    state=1;
+		    Step1();
+		}
+		}
+    </script>
+</head>
+<body>
+<div id="Layer1" style="position:absolute; width:100%; height:100%; z-index:-1; left:0; top:0;">    
+<img src="onmyoji/bg.jpg"  width="100%" height="100%" left="0" top="0"/>
+</div>    
+<h1 align="center">
+<br>
+猜剪影游戏
+<br></h1>
+<p align="center">请猜出下面这个剪影的名字</p>
+<div align="center">
+<br>
+<img src="onmyoji/1.png" id="pic" width="300" height="400" align="center">
+</div>
+<div align="center">
+<br>
+<input type="button" onclick="Change();"  value="下一题" >
+</div>
+<br>
+<p align="center" id="txt">准备</p>
+<script type="text/javascript"> 
+//加载图片
+	var item = document.getElementById("pic");
+    vwidth = item.width;
+</script>
+</body>
+</html>
